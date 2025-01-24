@@ -14,6 +14,12 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+
+            colors: {
+                BarvaTlacitka1: '#3d8f48', // Barva: #3d8f48
+                BarvaTlacitka2: '#faf7f5', // Barva: #faf7f5
+                BarvaTlacitka3: '#faf7c5', // Barva: #faf7c5
+            },
         },
     },
 

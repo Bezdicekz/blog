@@ -13,8 +13,16 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Přehled') }}
                     </x-nav-link>
+
+                    <!-- Pokud jsem admin tak se objeví toto menu -->
+                    @if(auth()->user()->isAdmin()) <!-- Pokud používáš vlastní roli -->
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Správa uživatelů') }}
+                    </x-nav-link>
+                    @endif
+
                 </div>
             </div>
 
@@ -35,7 +43,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('Profil') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -45,7 +53,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('Odhlásit se') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
