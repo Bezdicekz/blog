@@ -18,7 +18,7 @@
 
                     <!-- Pokud jsem admin tak se objeví toto menu -->
                     @if(auth()->user()->isAdmin()) <!-- Pokud používáš vlastní roli -->
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('admin.uzivatele')" :active="request()->routeIs('admin.uzivatele')">
                         {{ __('Správa uživatelů') }}
                     </x-nav-link>
                     @endif

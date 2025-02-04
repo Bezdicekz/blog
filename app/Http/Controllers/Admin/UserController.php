@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -12,7 +14,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        // Pokud uživatel není přihlášen, přesměruj na login
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // Pokud uživatel nemá roli 'admin', přesměruj na dashboard
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard');
+        }
+
+        // Pokud je uživatel admin, zobrazí se stránka uzivatele.blade.php
+        $users = User::all();
+        return view('uzivatele', compact('users')); // Předání uživatelů do šablony
     }
 
     /**
@@ -44,7 +58,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id); // Získání uživatele podle ID
+        return view('edit_user', compact('user')); // Předání uživatele do šablony
     }
 
     /**
@@ -52,7 +67,23 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        // Validace vstupních dat
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'role' => 'required|in:admin,user',
+        ]);
+
+        // Aktualizace údajů uživatele
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+        ]);
+
+        return redirect()->route('admin.uzivatele')->with('success', 'Uživatel byl úspěšně aktualizován!');
     }
 
     /**
